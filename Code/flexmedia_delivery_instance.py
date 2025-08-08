@@ -142,7 +142,7 @@ class flexmedia_delivery_instance:
         alpha = 1.0  #penalty for objective
 
         D = self.datacentre_costs           #costs to open
-        B = np.random.randint(1000, 2000, m)  #centre capacities
+        B = self.datacentre_capacities #centre capacities
         c = self.consumer_costs             #consumer delivery costs
         d = self.consumer_latencies #latencies/distances
 
@@ -151,6 +151,7 @@ class flexmedia_delivery_instance:
         #######
 
         flexmedia_model = gp.Model("flexmedia_datacentre_placement")
+        flexmedia_model.setParam('OutputFlag', 0) #prevents console printing
 
         # Decision variables
         # y[i] = 1 if we open centre i
@@ -202,7 +203,6 @@ class flexmedia_delivery_instance:
         #########
 
         flexmedia_model.optimize()
-        print(flexmedia_model.status) #This should be 2, else this is not the optimal solution
         self.optimisation_model = flexmedia_model
         
         ################
